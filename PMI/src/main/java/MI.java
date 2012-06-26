@@ -58,7 +58,7 @@ public class MI {
 				}
 			}
 			
-			
+			 
 			TopDocs docs2=searcher.search(new TermQuery(new Term("la",wordLabel)), N+1);
 			int totalC2=docs2.totalHits;
 			

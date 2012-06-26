@@ -7,32 +7,33 @@ import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.store.MMapDirectory;
 
 
-@SuppressWarnings("unused")
 public class SourceFileReader {
 
 	
 	public static void main(String[] args){
 		
 		String indexPath="/home/coder/data/Sougou_index";
+		int totalNum=0;
+		int totalLength=0;
 		try {
 			MMapDirectory dir=new MMapDirectory(new File(indexPath));
 			IndexReader ir=IndexReader.open(dir, true);
-			int totalNum=ir.maxDoc();
+			totalNum=ir.maxDoc();
 			System.out.println("total:"+totalNum);
 			
-			int i=100;
-			
-//			for(int i =0 ; i <totalNum;i++){
+//			int i=100;
+			for(int i =0 ; i <totalNum;i++){
 			
 				Document doc=ir.document(i);
-//				String content=doc.get("content");
+				String content=doc.get("content");
+				totalLength+=content.length();
 //				System.out.println("content:"+content);
 				String label=doc.get("la");
-				System.out.println("label:"+label);
+//				System.out.println("label:"+label);
 				String id=doc.get("id");
-				System.out.println("id:"+id);
+//				System.out.println("id:"+id);
 				String path=doc.get("path");
-				System.out.println("path:"+path);
+//				System.out.println("path:"+path);
 				
 				TermFreqVector vector=ir.getTermFreqVector(i, "content");
 				String terms[]=vector.getTerms();
@@ -48,7 +49,7 @@ public class SourceFileReader {
 //				}
 //				System.out.println();
 			
-//			}
+			}
 			
 			ir.close();
 			dir.close();
@@ -59,6 +60,11 @@ public class SourceFileReader {
 			
 		}
 		
+		double avalLength=totalLength/(totalNum+0.0);
+		
+		System.out.println("TotalLength:"+totalLength);
+		System.out.println("totalNum:"+totalNum);
+		System.out.println("avalLength:"+avalLength);
 		
 		
 	}

@@ -19,7 +19,7 @@ public class Doucment_Sogou {
 	public String toString(){
 		return "Content:"+content+"\n"+"Label:"+label;
 	}
-	
+	 
 	
 	
 }
