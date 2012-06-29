@@ -1,9 +1,16 @@
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.TermFreqVector;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.store.MMapDirectory;
 
 
@@ -21,23 +28,51 @@ public class SourceFileReader {
 			totalNum=ir.maxDoc();
 			System.out.println("total:"+totalNum);
 			
-//			int i=100;
-			for(int i =0 ; i <totalNum;i++){
+			TermEnum terms=ir.terms(new Term("content"));
 			
-				Document doc=ir.document(i);
-				String content=doc.get("content");
-				totalLength+=content.length();
+			Map<String,Integer> zidian=new HashMap<String,Integer>(); 
+			
+			int termCount=0;
+			while(terms.next()){
+				String ci=terms.term().text();
+				
+				String reg="\\d";
+				Pattern p = Pattern.compile(reg);
+				Matcher m=p.matcher(ci);
+				boolean flag=m.find();
+				if(!flag){
+					System.out.println(ci);
+					termCount++;
+					zidian.put(ci, termCount);
+//					System.out.println("get it");
+				}else{
+//					System.out.println("not get it");
+				}
+			}
+			System.out.println("termCount:"+termCount);
+			
+//			ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File("zidian.txt")))); 
+//			out.writeObject(zidian);
+//			out.flush();
+//			out.close(); 
+			
+//			int i=100;
+//			for(int i =0 ; i <totalNum;i++){
+			
+//				Document doc=ir.document(i);
+//				String content=doc.get("content");
+//				totalLength+=content.length();
 //				System.out.println("content:"+content);
-				String label=doc.get("la");
+//				String label=doc.get("la");
 //				System.out.println("label:"+label);
-				String id=doc.get("id");
+//				String id=doc.get("id");
 //				System.out.println("id:"+id);
-				String path=doc.get("path");
+//				String path=doc.get("path");
 //				System.out.println("path:"+path);
 				
-				TermFreqVector vector=ir.getTermFreqVector(i, "content");
-				String terms[]=vector.getTerms();
-				int[] freqs=vector.getTermFrequencies();
+//				TermFreqVector vector=ir.getTermFreqVector(i, "content");
+//				String terms[]=vector.getTerms();
+//				int[] freqs=vector.getTermFrequencies();
 				
 //				System.out.println("terms.length:"+terms.length+"  ---  freqs.length:"+freqs.length);
 				
@@ -49,7 +84,7 @@ public class SourceFileReader {
 //				}
 //				System.out.println();
 			
-			}
+//			}
 			
 			ir.close();
 			dir.close();

@@ -15,9 +15,9 @@ public class MI {
 
 	
 	public static void main(String[] args){
-		String word1="电脑";
-		String label1="文化";
-		String word2="体育";
+		String word1="黑眼圈";
+		String label1="IT";
+//		String word2="体育";
 		
 		MI mi=new MI();
 		
@@ -80,17 +80,6 @@ public class MI {
 		}
 		return mm;
 	}
-	
-	public static  double mi_function(int A_has_t_is_c,int B_has_t_not_c,int N,int C_nothas_t_is_c){
-		double mi=0.0;
-		
-		mi=Math.log((A_has_t_is_c*N)/((A_has_t_is_c+C_nothas_t_is_c)*(A_has_t_is_c+B_has_t_not_c+0.0)));
-		
-		return mi;
-		
-		
-	}
-	
 }
 class MIModel{
 	private int A;
@@ -109,10 +98,26 @@ class MIModel{
 	
 	public double getMi_value() {
 		
-		mi_value=MI.mi_function(A, B, N, C);
+		mi_value=mi_function(A, B, N, C);
 		
 		return mi_value;
 	}
+	
+	public static double mi_function(int A_has_t_is_c, int B_has_t_not_c,
+			int N, int C_nothas_t_is_c) {
+		double mi = 0.0;
+		if(A_has_t_is_c==0){
+			return 0;
+		}
+		mi = Math.log((A_has_t_is_c * N)
+				/ ((A_has_t_is_c + C_nothas_t_is_c) * (A_has_t_is_c
+						+ B_has_t_not_c + 0.0)));
+
+		return mi;
+
+	}
+	
+	
 	public void setMi_value(double mi_value) {
 		this.mi_value = mi_value;
 	}
